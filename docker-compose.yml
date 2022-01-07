@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+
+  django: 
+    build: 
+      context: ./docker
+    volumes:
+      - ./src:/src
+      - ./docker:/docker
+    env_file:
+      - ./docker/RUN_SECRETS.env
+    entrypoint: ["sh", "docker/entrypoint.sh"]
+    ports:
+      - 3000:3000
