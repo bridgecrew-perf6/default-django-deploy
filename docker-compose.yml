@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.3'
 
 services:
 
@@ -12,4 +12,5 @@ services:
       - ./docker/RUN_SECRETS.env
     entrypoint: ["sh", "docker/entrypoint.sh"]
     ports:
-      - 3000:3000
+      - "80:3000"
+      - "443:3000"
