@@ -6,4 +6,4 @@ python3 manage.py shell < /docker/set_domain_name.py
 
 nginx -c /docker/nginx.conf -g "pid /tmp/nginx.pid;"
 
-uwsgi --socket config.sock --master --enable-threads --module config.wsgi
+uwsgi --socket :8000 --master --enable-threads --module config.wsgi 
