@@ -1,16 +1,44 @@
-version: '3.3'
+version: "3.9"
 
 services:
-
-  django: 
+ 
+  service1: 
     build: 
-      context: ./docker
+      context: ./service1/docker
     volumes:
-      - ./src:/src
-      - ./docker:/docker
+      - ./service1/src:/src
+      - ./service1/docker:/docker
     env_file:
-      - ./docker/RUN_SECRETS.env
+      - ./service1/docker/RUN_SECRETS.env
     entrypoint: ["sh", "docker/entrypoint.sh"]
-    ports:
+    networks: 
+      - internal
+
+  service2: 
+    build: 
+      context: ./service2/docker
+    volumes:
+      - ./service2/src:/src
+      - ./service2/docker:/docker
+    env_file:
+      - ./service2/docker/RUN_SECRETS.env
+    entrypoint: ["sh", "docker/entrypoint.sh"]
+    networks: 
+      - internal
+
+  server:
+    build:
+      context: ./server/docker
+    entrypoint: ["nginx", "-g", "daemon off;"]
+    ports: 
       - "80:3000"
       - "443:3000"
+    depends_on: 
+      - service1
+      - service2
+    networks: 
+      - internal
+
+networks: 
+  internal:
+    driver: bridge
